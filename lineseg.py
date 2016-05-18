@@ -34,12 +34,18 @@ def lineseg(edgelist, tol):
                 (m, i) = maxlinedev(x[first:last], y[first:last])
 
             pts += 1
-            # Stuff goes here
-            #
-            #
-            #
+            # seglist{e}(Npts, :) = [y(lst) x(lst)];
+            # seglist is a cell, an array of arrays
+            # like [] [] []
+            #      [] [] []
+            #      [] [] []
+            seglist[e][pts, :] = [y[first], x[first]]
+
+            # Reset first and last for the next iteration.
             first = last
             last = len(x)
+
+            #end - lineseg
 
 
 
