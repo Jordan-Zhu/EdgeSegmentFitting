@@ -1,6 +1,6 @@
 # EdgeSegmentFitting
 Edge linking and edge segment drawing
-============================================================================================
+-----------------------------------------------------------
 
 TO-DO:
 Write and test maxlinedev. Start writing lineseg (form straight line segments from an edge list) which uses maxlinedev. 
