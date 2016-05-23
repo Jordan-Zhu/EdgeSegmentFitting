@@ -7,18 +7,27 @@
 import cv2
 import sys
 import numpy as np
+import scipy.io as sio
 from matplotlib import pyplot as plt
 from maxlinedev import maxlinedev
 
 
 def lineseg(edgelist, tol):
+    # Find the length of the largest array dimension.
     num_edges = max(edgelist.shape[0], edgelist.shape[1])
-    seglist = np.zeros((1, num_edges))
+    # Create an array of arrays to store the line segments.
+    # In numpy, this is done by creating an array of objects.
+    seglist = np.empty((num_edges, 2), dtype = object)
 
+
+    # Loop through all the 'cells' (arrays of arrays).
     for e in xrange(1, num_edges):
-        y = edgelist[e][:, 1]
-        x = edgelist[e][:, 2]
+        # (row, col) corresponds to (x, y) in numpy.
+        x = edgelist[e, 0]
+        y = edgelist[e, 1]
 
+        # Indices of first and last points in edge segment
+        # being considered.
         first = 1
         last = len(x)
 
@@ -45,7 +54,10 @@ def lineseg(edgelist, tol):
             first = last
             last = len(x)
 
-            #end - lineseg
+
+    return seglist
+
+    #end - lineseg
 
 
 
