@@ -51,9 +51,9 @@ def maxlinedev(x, y):
         # Compute the parameters.
         y1my2 = y[0] - y[num_pts]
         x2mx1 = x[num_pts] - x[0]
-        C = y[num_pts] * x[0] - y[0] * x[num_pts]
+        contour = y[num_pts] * x[0] - y[0] * x[num_pts]
 
-        dist_contour = abs(x * y1my2 + y * x2mx1 + C) / endpt_dist
+        dist_contour = abs(x * y1my2 + y * x2mx1 + contour) / endpt_dist
     else:
         # Endpoint distances are coincident, so calculate distances from first point.
         dist_contour = math.sqrt(np.power(x - x[0], 2) + np.power(y - y[0], 2))
@@ -61,7 +61,8 @@ def maxlinedev(x, y):
     # Set endpoint distance to 1 so that normalized error can be used.
     endpt_dist = 1
 
-    maxdev = dist_contour
-
     # Also find which index the maxdev occurs so that the line can be stopped there.
-    return maxdev
+    index_max = np.argmax(dist_contour)
+    maxdev = np.amax(dist_contour)
+
+    return (maxdev, index_max)
