@@ -65,4 +65,6 @@ def maxlinedev(x, y):
     index_max = np.argmax(dist_contour)
     maxdev = np.amax(dist_contour)
 
+    # Return a tuple/list.
+    # Unpack it by doing: maxdev, index = foo()
     return (maxdev, index_max)
