@@ -2,7 +2,15 @@
 # Name:        lineseg
 # Purpose:     Form straight line segments from an edge list.
 # -------------------------------------------------------------------------------
-
+#
+# Algorithm:
+#   Create line segments, given an list of pixel arrays
+#   and a tolerance for how close the line segment should be to the edgels.
+#
+#   Run it for every set of edges in the list.
+#   Create an output array to store the created line segments.
+#
+#   
 
 import cv2
 import sys
@@ -14,14 +22,17 @@ from maxlinedev import maxlinedev
 
 def lineseg(edgelist, tol):
     # Find the length of the largest array dimension.
-    num_edges = max(edgelist.shape[0], edgelist.shape[1])
+    # Edgelist is an array of arrays (eg. size 1x163, or a list with 163 arrays)
+    num_edges = edgelist.shape[1]
     # Create an array of arrays to store the line segments.
     # In numpy, this is done by creating an array of objects.
-    seglist = np.empty((num_edges, 2), dtype = object)
+    # Now, it's an empty list that can hold coordinates.
+    seglist = []
+    # seglist = np.empty((num_edges, 2), dtype = object)
 
 
     # Loop through all the 'cells' (arrays of arrays).
-    for e in xrange(1, num_edges):
+    for e in xrange(0, num_edges):
         # (row, col) corresponds to (x, y) in numpy.
         x = edgelist[e, 0]
         y = edgelist[e, 1]
