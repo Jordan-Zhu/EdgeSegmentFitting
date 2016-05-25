@@ -1,57 +1,87 @@
 # -------------------------------------------------------------------------------
-# Name:        maxlinedev
-# Purpose:     Find max deviation from a line in an edge contour.
+# Name:         maxlinedev
+# Purpose:      Finds maximum deviation of a point from a line
+#               joining the endpoints of an edge contour.
 # -------------------------------------------------------------------------------
+#
+# Usage:    (maxdev, index) = maxlinedev(x, y)
+#
+# Arguments:
+#           x, y    - arrays of x, y (row, col) that are indicies of connected pixels
+#                     on the contour.
+#
+# Returns:
+#           maxdev  - Maximum deviation of contour point from the line joining the
+#                     joining the end point pixels of the contour.
+#           index   - Index of the point having maximum deviation.
+#
+# See also: LINESEG
+#
+# Author: Jordan Zhu
+#
+# May 2016 - Original version.
 
 
-import cv2
-import sys
 import numpy as np
 import sys
 import math
-from matplotlib import pyplot as plt
-
 
 def maxlinedev(x, y):
-    pts = len(x)
 
-    if pts == 1:
-        print 'Contour of length 1'
+    num_pts = len(x) - 1
+
+    # Base cases.
+    if num_pts == 0 or num_pts == 1:
+        print 'Warning: input has too few points to form a contour.'
         maxdev = 0
-        index = 1
-        dist = 1
-        totaldev = 0
-        return
-    elif pts == 0:
-        print 'Contour of length 0'
+        index = 0
+        endpt_dist = 0
+        # Letting us know that there's an error in the input.
+        return -1
+    # end-base case
 
-    # Distance between end points.
-    dist = math.sqrt((x[1] - x[pts])**2 + (y[1] - y[pts])**2)
+    # Find distance between endpoints using distance formula.
+    # (Dist. formula: sqrt((x1 - x0)^2 + (y1 - y0)^2)
+    endpt_dist = math.sqrt((x[0] - x[num_pts])**2 + (y[1] - y[num_pts])**2)
 
-    if dist > sys.float_info.epsilon:
-        y1my2 = y[1] - y[pts]
-        x2mx1 = x[pts] - x[1]
-        contour = y[pts] * x[1] - y[1] * x[pts]
+    # Continue if the distance is of significance.
+    # Otherwise, the contour and line are identical.
+    if endpt_dist > sys.float_info.epsilon:
+        # Do some math stuff.
+        # Equation of line joining end points (x1, y1) and (x2, y2)
+        # can be parameterized by:
+        #
+        #    x * (y1 - y2) + y * (x2 - x1) + y2 * x1 - y1 * x2 = 0
+        #
+        # (See Jain, Rangachar and Schunck, "Machine Vision", McGraw - Hill
+        # 1996. pp 194 - 196)
 
-        # Calculate the distance from line segment for each contour point.
-        d = abs(x * y1my2 + y * x2mx1 + contour) / dist
+        y1my2 = y[0] - y[num_pts]
+        x2mx1 = x[num_pts] - x[0]
+        contour = y[num_pts] * x[0] - y[1] * x[num_pts]
 
-    # End points are coincident, calculate distances from first point.
+        # Calculate distance from this line segment to each point on the contour.
+        dist_contour = abs(x * y1my2 + y * x2mx1 + contour) / endpt_dist
+    # end-if
+
+    # Endpoints are coincident, so simply calculate distance
+    # from the first point.
     else:
-        # How to translate this matlab code
-        d = math.sqrt((x - x[1])**2 + (y - y[1])**2)
+        dist_contour = math.sqrt((x - x[0])**2 + (y - y[0])**2)
+    # end-else
 
-    # Set D(dist) to 1 so that the normalized error can be used.
-    dist = 1
+    # Reset so that error checking can be used.
+    endpt_dist = 1
 
-    (maxdev, index) = find_max(d)
+    # Return index where max deviation occurs in the contour.
+    # argmax returns the index of the first occurence of max.
+    # amax returns the maximum of the array.
+    index_max = np.argmax(dist_contour)
+    maxdev = np.amax(dist_contour)
 
-
-def find_max(l):
-    max_val = max(l)
-    max_idx = l.index(max_val)
-    return max_val, max_idx
-
-
+    # Return index and max dev as a list of tuples.
+    # Unpack with: maxdev, index = foo()
+    return (maxdev, index_max)
+# end-maxlinedev
 
 
