@@ -5,6 +5,86 @@ import Queue
 
 import time, random
 
+UP_LEFT =    1
+UP =         2
+UP_RIGHT =   3
+RIGHT =      4
+DOWN_RIGHT = 5
+DOWN =       6
+DOWN_LEFT =  7
+LEFT =       8
+
+class MyQueue:
+    # QSIZE = 8
+    # q = Queue.Queue(QSIZE)
+    noItems = 0
+    rear = 0
+
+    def __init__(self):
+        self.qsize = 8
+        self.items = [None] * self.qsize
+        self._noItems = 0
+        self._rear = 0
+        # self.__queue = queue
+
+    def isEmpty(self):
+        return self.items == []
+
+    def enqueue(self, item):
+        self.items.insert(0, item)
+
+    def dequeue(self):
+        return self.items.pop()
+
+    def size(self):
+        return len(self.items)
+
+    def add(self, dir):
+        self._rear += 1
+        self.items.insert(self._rear, dir)
+        if (self._rear >= self.qsize):
+            self._rear = 0
+        if(self._noItems < self.qsize):
+            self._noItems += 1
+
+    def getCardinalDir(self, analysisDir):
+        global checkDirs
+        compare = np.zeros((2,), dtype=np.int)
+
+        # We want to find the side that is most likely to be an edge.
+        # So these lists contain each direction of one the sides and
+        # we only need one complete side since the other direction
+        # will be anything else.
+        if(analysisDir == LEFT or analysisDir == RIGHT):
+            checkDirs = {UP, DOWN, LEFT, DOWN_LEFT, UP_LEFT, RIGHT}
+        elif analysisDir == UP or analysisDir == DOWN:
+            checkDirs = {LEFT, RIGHT, UP, UP_LEFT, UP_RIGHT, DOWN}
+
+        # Determine the strongest direction.
+        for i in xrange(0, self._noItems):
+            if self.items[i] == checkDirs[0] or self.items[i] == checkDirs[1]:
+                continue
+
+            if(self.items[i] == checkDirs[2] or self.items[i] == checkDirs[3] or self.items[i] == checkDirs[4]):
+                compare[0] += 1
+            else:
+                compare[1] += 1
+
+        if compare[0] >= compare[1]:
+            return checkDirs[2]
+        else:
+            return checkDirs[5]
+
+    def computeNextDir(self, analysisDir):
+
+        if(analysisDir == LEFT or analysisDir == RIGHT):
+            cdir = 0
+
+
+
+
+
+
 # Algorithm:
 #
 # ==== Step 2: EdgeSegment Creation with 8-Directional Walk ====
@@ -67,7 +147,7 @@ import time, random
 # for diagonal, and absolute one and absolute two (eg. UP_RIGHT, UP, RIGHT, noItems, C).
 # --- end-ComputeNextDir ---
 #
-# 8 Directional Walk with Prediction
+# ------ 8 Directional Walk with Prediction ------
 # This is used by PELWalk8Dirs.
 #
 # Walk8Dirs(edgeImg, width, height, int rows, int cols, int dir, Pixels)
