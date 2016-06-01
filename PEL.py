@@ -48,37 +48,121 @@ class MyQueue:
             self._noItems += 1
 
     def getCardinalDir(self, analysisDir):
-        global checkDirs
-        compare = np.zeros((2,), dtype=np.int)
+        global checkDir
+        compare = np.zeros((2,), dtype = np.int)
 
         # We want to find the side that is most likely to be an edge.
         # So these lists contain each direction of one the sides and
         # we only need one complete side since the other direction
         # will be anything else.
         if(analysisDir == LEFT or analysisDir == RIGHT):
-            checkDirs = {UP, DOWN, LEFT, DOWN_LEFT, UP_LEFT, RIGHT}
+            checkDir = {UP, DOWN, LEFT, DOWN_LEFT, UP_LEFT, RIGHT}
         elif analysisDir == UP or analysisDir == DOWN:
-            checkDirs = {LEFT, RIGHT, UP, UP_LEFT, UP_RIGHT, DOWN}
+            checkDir = {LEFT, RIGHT, UP, UP_LEFT, UP_RIGHT, DOWN}
 
         # Determine the strongest direction.
         for i in xrange(0, self._noItems):
-            if self.items[i] == checkDirs[0] or self.items[i] == checkDirs[1]:
+            if self.items[i] == checkDir[0] or self.items[i] == checkDir[1]:
                 continue
 
-            if(self.items[i] == checkDirs[2] or self.items[i] == checkDirs[3] or self.items[i] == checkDirs[4]):
+            if(self.items[i] == checkDir[2] or self.items[i] == checkDir[3] or self.items[i] == checkDir[4]):
                 compare[0] += 1
             else:
                 compare[1] += 1
 
         if compare[0] >= compare[1]:
-            return checkDirs[2]
+            return checkDir[2]
         else:
-            return checkDirs[5]
+            return checkDir[5]
+
+    def getDiagonalDir(self, analysisDir):
+        global checkDir
+        compare = np.zeros((2,), dtype = np.int)
+
+        # Sides to check for each diagonal.
+        if analysisDir == UP_LEFT:
+            checkDir = {UP, LEFT}
+        elif analysisDir == UP_RIGHT:
+            checkDir = {UP, RIGHT}
+        elif analysisDir == DOWN_RIGHT:
+            checkDir = {DOWN, RIGHT}
+        else:
+            checkDir = {DOWN, LEFT}
+
+        # Compare to find the strongest side.
+        for i in xrange(0, self._noItems):
+            if self.items[i] == checkDir[0]:
+                compare[0] += 1
+            elif self.items[i] == checkDir[1]:
+                compare[1] += 1
+
+        # Return the one that is most likely
+        # to be the next direction.
+        if compare[0] >= compare[1]:
+            return checkDir[0]
+        else:
+            return checkDir[1]
 
     def computeNextDir(self, analysisDir):
+        global nextDir
+        # Check the sets to determine the type of direction.
+        cardinalDir = frozenset([LEFT, RIGHT, UP, DOWN])
+        diagonalDir = frozenset([UP_LEFT, UP_RIGHT, DOWN_RIGHT, DOWN_LEFT])
 
-        if(analysisDir == LEFT or analysisDir == RIGHT):
-            cdir = 0
+        if analysisDir in cardinalDir:
+            nextDir = self.getCardinalDir(analysisDir)
+        elif analysisDir in diagonalDir:
+            nextDir = self.getDiagonalDir(analysisDir)
+
+        return nextDir
+
+class CreateEdgeSeg:
+    # initialization
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+
+    def Walk8Dirs(self, edgeImg, width, height, row, col, dir):
+        Q = MyQueue()
+        count = 0
+        pixels = np.full((edgeImg.shape[0], edgeImg.shape[1], 3), 255, np.int)
+
+        # Directions done by row, column.
+        U =  [-1, 0]
+        D =  [1, 0]
+        L =  [0, -1]
+        R =  [0, 1]
+        UR = [-1, 1]
+        UL = [-1, -1]
+        DR = [1, 1]
+        DL = [1, -1]
+
+
+        while 1:
+            if row <= 0 or row >= height - 1:
+                return count
+            if col <= 0 or col >= width:
+                return count
+
+            rows = edgeImg.shape[0]
+            cols = edgeImg.shape[1]
+            count += 1
+
+            # Add the current direction to the queue.
+            Q.add(dir)
+
+            if dir == UP_LEFT:
+                nextDir = Q.computeNextDir(UP_LEFT)
+
+                # Up-Left?
+                if edgeImg[(row - UR[0]) * width + (col + UR[1])]:
+                    if nextDir == UP:
+                        # Up?
+                        if edgeImg[(row - U[0]) * width + (col + U[1])]:
+                            pixels[count].row = row - 1
+                        #
+
 
 
 
