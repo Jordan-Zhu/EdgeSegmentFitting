@@ -133,4 +133,6 @@ if __name__ == "__main__":
     for n in IterableQueue(q):
         print(n)
 
+    # Walking pixel downstairs, ask the prediction engine left or right.
+    # Test case i.e., down, down-left, down-left, down, down, down, down
 
