@@ -4,7 +4,8 @@ Edge linking and edge segment drawing
 -----------------------------------------------------------
 
 TO-DO:
-- Write unit test for direction prediction queue. 
+- Write drawedgelist
+- <strike>Write unit test for direction prediction queue.</strike>
 
 
 Further ahead: 
