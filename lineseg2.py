@@ -24,21 +24,26 @@
 #
 # May 2016 - Original version.
 
-
-from maxlinedev import maxlinedev
+import numpy as np
+from maxlinedev2 import maxlinedev
 
 def lineseg2(edgelist, tol):
-    num_edges = len(edgelist)
+    num_contours = edgelist.shape[0]
     # Create an empty list to store the resulting arrays of edge segments.
     seglist = []
 
-    for e in xrange(0, num_edges):
-        x = edgelist[e][0]
-        y = edgelist[e][1]
+    for i in xrange(0, num_contours):
+        num_edges = len(edgelist[i])
+
+        # Fill in the x and y coordinate matrices.
+        x = np.empty(num_edges)
+        y = np.empty(num_edges)
+        np.copyto(x, edgelist[0, :, 0, 0])
+        np.copyto(y, edgelist[0, :, 0, 1])
 
         # Beginning and endpoints in edge segment being considered.
         first = 0
-        last = len(edgelist[e])
+        last = num_edges - 1
 
         # We can add the first point right away since
         # it's going to be the beginning of any created edge segment.
@@ -49,7 +54,7 @@ def lineseg2(edgelist, tol):
             # Find the size and index of maximum deviation.
             (maxdev, index) = maxlinedev(x[first:last], y[first:last])
 
-            if maxdev > tol:
+            while maxdev > tol:
                 # Shorten the line to point of max deviation.
                 last = first + index
                 # Double check
@@ -60,10 +65,11 @@ def lineseg2(edgelist, tol):
             seglist.append([x[last], y[last]])
 
             first = last
-            last = len(edgelist[e])
+            last = num_edges - 1
+            # print 'first = ', first, 'last = ', last
         # end-while
     # end-for
-
+    print 'seglist length = ', len(seglist)
     return seglist
 # end-lineseg
 
