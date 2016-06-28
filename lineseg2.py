@@ -27,19 +27,20 @@
 import numpy as np
 from maxlinedev2 import maxlinedev
 
-def lineseg2(edgelist, tol):
-    num_contours = edgelist.shape[0]
+def lineseg2(edgelist, edges, tol):
+    # num_contours = edgelist.shape[0]
+    num_contours = edges
     # Create an empty list to store the resulting arrays of edge segments.
     seglist = []
 
     for i in xrange(0, num_contours):
-        num_edges = len(edgelist[i])
+        num_edges = len(edgelist[:, 0, 0])
 
         # Fill in the x and y coordinate matrices.
         x = np.empty(num_edges)
         y = np.empty(num_edges)
-        np.copyto(x, edgelist[0, :, 0, 0])
-        np.copyto(y, edgelist[0, :, 0, 1])
+        np.copyto(x, edgelist[:, 0, 0])
+        np.copyto(y, edgelist[:, 0, 1])
 
         # Beginning and endpoints in edge segment being considered.
         first = 0
