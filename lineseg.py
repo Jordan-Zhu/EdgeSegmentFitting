@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------
-# Name:        lineseg2
-# Purpose:     Alternate version of lineseg. Forms straight line segments
+# Name:        lineseg
+# Purpose:     Forms straight line segments
 #              from an edge list.
 # -------------------------------------------------------------------------------
 #
