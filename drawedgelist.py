@@ -23,8 +23,8 @@ def gen_color():
 
 
 def drawedgelist(edgelist, rowscols):
-    edges = edgelist.shape[0]
-    handles = np.zeros((edges, 1))
+    # edges = edgelist.shape[0]
+    # handles = np.zeros((edges, 1))
 
     blank_image = np.zeros((rowscols[0], rowscols[1], 3), np.uint8)
     # Set up the edge colors.
@@ -37,10 +37,11 @@ def drawedgelist(edgelist, rowscols):
 
     colors = [[0,255,255], [255,0,0], [0,255,0], [194,154,244], [201,153,203],
               [207,198,174], [119,190,119], [181,158,179], [71,179,255]]
-    len = edgelist.shape[0]
-    for i in xrange(0, len):
-        cv2.polylines(blank_image, [edgelist[0]], False, (colors[i]))
-    # cv2.polylines(blank_image, [edgelist2], False, (0, 255, 255))
+    # len = edgelist.shape[0]
+    # for i in xrange(0, len):
+    #     cv2.polylines(blank_image, [edgelist[i]], False, (colors[i]))
+
+    cv2.polylines(blank_image, [edgelist], False, (0, 255, 255))
     # cv2.drawContours(blank_image, [edgelist], -1, (0, 255, 255), 3)
     # cv2.line(blank_image, , [50, 60], color=(0, 255, 0), thickness=2)
     # print edgelist.item(1)

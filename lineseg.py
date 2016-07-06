@@ -25,18 +25,25 @@
 # May 2016 - Original version.
 
 import numpy as np
-from maxlinedev2 import maxlinedev
+from maxlinedev import maxlinedev
 
-def lineseg2(edgelist, edges, tol):
+def lineseg(edgelist, tol):
     # num_contours = edgelist.shape[0]
-    num_contours = edges
+    num_contours = edgelist.shape[0]
+
+    # reshape array
+    temp = []
+    for i in xrange(num_contours):
+        arr = np.squeeze(edgelist[i])
+        temp.append(arr)
 
     # seglist = np.zeros((edges, ), dtype=np.int32)
     listholder = []
     seglist = []
 
-    for i in xrange(0, num_contours):
-        num_edges = len(edgelist[:, 0, 0])
+    for i in xrange(num_contours):
+        # num_edges = len(edgelist[:, 0, 0])
+        num_edges = edgelist[i][:, 0].shape[0]
 
         # Create an empty list to store the resulting arrays of edge segments.
         # list = []
@@ -44,8 +51,10 @@ def lineseg2(edgelist, edges, tol):
         # Fill in the x and y coordinate matrices.
         x = np.empty(num_edges)
         y = np.empty(num_edges)
-        np.copyto(x, edgelist[:, 0, 0])
-        np.copyto(y, edgelist[:, 0, 1])
+        np.copyto(x, temp[i][:, 0])
+        np.copyto(y, temp[i][:, 1])
+        # np.copyto(x, edgelist[:, 0, 0])
+        # np.copyto(y, edgelist[:, 0, 1])
 
         # Beginning and endpoints in edge segment being considered.
         first = 0
@@ -82,7 +91,7 @@ def lineseg2(edgelist, edges, tol):
         seglist.append(list)
     # end-for
     # print 'seglist length = ', len(seglist)
-    seglist = np.array(seglist, dtype=np.int32)
+    # seglist = np.array(seglist, dtype=np.int32)
     return seglist
 # end-lineseg
 
