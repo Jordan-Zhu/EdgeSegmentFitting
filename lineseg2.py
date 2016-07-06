@@ -30,11 +30,16 @@ from maxlinedev2 import maxlinedev
 def lineseg2(edgelist, edges, tol):
     # num_contours = edgelist.shape[0]
     num_contours = edges
-    # Create an empty list to store the resulting arrays of edge segments.
+
+    # seglist = np.zeros((edges, ), dtype=np.int32)
+    listholder = []
     seglist = []
 
     for i in xrange(0, num_contours):
         num_edges = len(edgelist[:, 0, 0])
+
+        # Create an empty list to store the resulting arrays of edge segments.
+        # list = []
 
         # Fill in the x and y coordinate matrices.
         x = np.empty(num_edges)
@@ -48,7 +53,8 @@ def lineseg2(edgelist, edges, tol):
 
         # We can add the first point right away since
         # it's going to be the beginning of any created edge segment.
-        seglist.append([x[first], y[first]])
+        # list.append([x[first], y[first]])
+        list = np.array([[x[first], y[first]]], dtype=np.int32)
         num_pts = 1
 
         while first < last:
@@ -63,14 +69,20 @@ def lineseg2(edgelist, edges, tol):
             # end - if
 
             num_pts += 1
-            seglist.append([x[last], y[last]])
+            # list.append([x[last], y[last]])
+            list = np.concatenate((list, np.array([[x[last], y[last]]], dtype=np.int32)))
 
             first = last
             last = num_edges - 1
             # print 'first = ', first, 'last = ', last
         # end-while
+
+        # Add the edge segment lists to a seglist container.
+        # list = np.asarray(list, dtype=np.int32)
+        seglist.append(list)
     # end-for
-    print 'seglist length = ', len(seglist)
+    # print 'seglist length = ', len(seglist)
+    seglist = np.array(seglist, dtype=np.int32)
     return seglist
 # end-lineseg
 

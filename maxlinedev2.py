@@ -7,16 +7,15 @@
 #
 #
 # Arguments:
-#          x, y   - arrays of x,y  (col, row) indicies of connected pixels
+#          x, y   - lists of x,y  (row, col) indicies of connected pixels
 #                   on the contour.
 # Returns:
 #          maxdev = Maximum deviation of contour point from the line
 #                     joining the end points of the contour (pixels).
 #
 
-# Pseudo-code. Not tested to work.
-# Issues: function takes in one value for each argument, yet MATLAB code has it so that it will be run from array index 0 to length - 1.
-# num_pts is one instance, where it uses the length of x, as if for all x.
+
+# Issues: blank.
 
 
 import math
@@ -25,20 +24,26 @@ import numpy as np
 
 def maxlinedev(x, y):
     # Number of points is the size of the input array.
-    num_pts = x.size()
+    num_pts = len(x)
 
     # Check whether array has enough points to form a contour.
-    if(num_pts == 1 or num_pts == 0):
-        print "error: contour length 0 or 1."
+    if num_pts == 1:
+        # print "error: contour of length 1."
         maxdev = 0
+        index_max = 1
         dist_contour = 1
+        return (maxdev, index_max)
+    elif num_pts == 0:
+        print "error: contour of length 0."
+        return
 
     # Bounds of the array.
     num_pts -= 1
 
-    # Distance formula for finding the endpoint distance.
+    # Find the endpoint distance using the distance formula.
     endpt_dist = math.sqrt(np.power(x[0] - x[num_pts], 2) + np.power(y[0] - y[num_pts], 2))
 
+    # If there's a meaningful distance we can proceed.
     eps = np.finfo(float).eps
     if endpt_dist > eps:
         # Eqn of line joining end pts (x1 y1) and (x2 y2) can be parameterised by
@@ -55,13 +60,14 @@ def maxlinedev(x, y):
 
         dist_contour = abs(x * y1my2 + y * x2mx1 + contour) / endpt_dist
     else:
-        # Endpoint distances are coincident, so calculate distances from first point.
+        # Endpoint distances are coincident (they're the same point),
+        # so calculate distances from first point.
         dist_contour = math.sqrt(np.power(x - x[0], 2) + np.power(y - y[0], 2))
 
-    # Set endpoint distance to 1 so that normalized error can be used.
+    # Set endpoint distance to 1 so that normalized error can be used. ???
     endpt_dist = 1
 
-    # Also find which index the maxdev occurs so that the line can be stopped there.
+    # Find which index the maxdev occurs so that the line can be stopped there.
     index_max = np.argmax(dist_contour)
     maxdev = np.amax(dist_contour)
 
