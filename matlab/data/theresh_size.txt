@@ -1,0 +1,11 @@
+size(Id)
+
+ans =
+
+   424   512
+
+K>> P.thresh_m
+
+ans =
+
+    10
