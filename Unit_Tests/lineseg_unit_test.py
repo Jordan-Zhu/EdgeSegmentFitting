@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-from ES_Drawing.lineseg import lineseg
-from ES_Drawing.drawedgelist import drawedgelist
+from lineseg import lineseg
+from drawedgelist import drawedgelist
 
 
 
@@ -39,16 +39,18 @@ if __name__ == '__main__':
     #     x.append(seglist[0][i, 0])
     x = seglist[0][:, 0]
     y = seglist[0][:, 1]
-    print 'x ', x[0]
+    print 'x ', x[1]
     print 'y ', seglist[0][:, 1]
 
     for n in seglist:
+        x = seglist[n][:, 0]
+        y = seglist[n][:, 1]
         for i in range(x.size - 1):
-            cv2.line(img, (x[n], y[n]), (x[n + 1], y[n + 1]), (0, 255, 255), thickness=2)
+            cv2.line(img, (x[i], y[i]), (x[i + 1], y[i + 1]), (0, 255, 255), thickness=2)
     #
-    # cv2.imshow("window", img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    cv2.imshow("window", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
     # drawedgelist(seglist, rowscols=[480, 640])
 

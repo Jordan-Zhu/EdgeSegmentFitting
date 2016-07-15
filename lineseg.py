@@ -23,6 +23,7 @@
 # Author: Jordan Zhu
 #
 # May 2016 - Original version.
+# July 2016 - Optimized algorithm
 
 import numpy as np
 from maxlinedev import maxlinedev
