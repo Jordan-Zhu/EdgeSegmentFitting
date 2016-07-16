@@ -23,7 +23,7 @@
 # Author: Jordan Zhu
 #
 # May 2016 - Original version.
-# July 2016 - Optimized algorithm
+# July 2016 - Reshapes the input array for better processing.
 
 import numpy as np
 from maxlinedev import maxlinedev
@@ -32,7 +32,7 @@ def lineseg(edgelist, tol):
     # num_contours = edgelist.shape[0]
     num_contours = edgelist.shape[0]
 
-    # reshape array
+    # reshape array -
     temp = []
     for i in xrange(num_contours):
         arr = np.squeeze(edgelist[i])
