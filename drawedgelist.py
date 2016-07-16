@@ -1,55 +1,62 @@
 # -------------------------------------------------------------------------------
 # Name:        drawedgelist
-# Purpose:     Alternate version of lineseg. Forms straight line segments
-#              from an edge list.
+# Purpose:     Plots pixels in edge lists.
 # -------------------------------------------------------------------------------
-# Usage:    handles = drawedgelist(edgelist, rowscols, lw,
+#
+# Usage:    drawedgelist(edgelist, rowscols, thickness)
+#
+# Arguments:
+#   edgelist    - Array of arrays containing edgelists
+#   rowscols    - Optional 2 element vector [rows cols] specifying the size
+#                 of the image from which the edges were detected. Otherwise
+#                 this defaults to the bounds of the line segment points.
+#
+# Author: Jordan Zhu
+#
+# July 2016 - Original version.
 
-
-import numpy as np
+import sys
 import cv2
-import colorsys
-import random
-
-def gen_color():
-    # use golden ratio
-    golden_ratio_conjugate = 0.618033988749895
-    h = random.randint(0, 32)  # use random start value
-    print h
-
-    h += golden_ratio_conjugate
-    h %= 1
-    return colorsys.hsv_to_rgb(h, 0.5, 0.95)
+import numpy as np
 
 
-def drawedgelist(edgelist, rowscols):
-    # edges = edgelist.shape[0]
-    # handles = np.zeros((edges, 1))
+def drawedgelist(edgelist, *args, **kwargs):
+    rowscols = kwargs.get('rowscols', None)
 
-    blank_image = np.zeros((rowscols[0], rowscols[1], 3), np.uint8)
-    # Set up the edge colors.
+    if rowscols is None or rowscols == []:
+        xmax = []
+        ymax = []
+        for n in edgelist:
+            idx = edgelist.index(n)
+            xmax.append(np.amax(edgelist[idx][:, 0]))
+            ymax.append(np.amax(edgelist[idx][:, 1]))
 
-    # list = [[10, 20], [50, 20], [10, 50], [50, 50], [100, 200], [90, 120]]
-    # list2 = np.asarray(list, np.int32)
+        # Get the rows and cols as the bounds of the line segment
+        # with an added buffer on the sides.
+        col = np.amax(xmax) + 10
+        row = np.amax(ymax) + 10
 
-    # Convert BGR to HSV
-    # hsv = cv2.cvtColor(blank_image, cv2.COLOR_BGR2HSV)
+        blank_image = np.zeros((row, col, 3), np.uint8)
+    else:
+        # Get the image size from the argument passed.
+        blank_image = np.zeros((rowscols[0], rowscols[1], 3), np.uint8)
 
-    colors = [[0,255,255], [255,0,0], [0,255,0], [194,154,244], [201,153,203],
-              [207,198,174], [119,190,119], [181,158,179], [71,179,255]]
-    # len = edgelist.shape[0]
-    # for i in xrange(0, len):
-    #     cv2.polylines(blank_image, [edgelist[i]], False, (colors[i]))
+    for n in edgelist:
+        # Loop through the edge segment arrays in edgelist.
+        idx = edgelist.index(n)
+        x = edgelist[idx][:, 0]
+        y = edgelist[idx][:, 1]
 
-    cv2.polylines(blank_image, [edgelist], False, (0, 255, 255))
-    # cv2.drawContours(blank_image, [edgelist], -1, (0, 255, 255), 3)
-    # cv2.line(blank_image, , [50, 60], color=(0, 255, 0), thickness=2)
-    # print edgelist.item(1)
-    # for i in xrange(3, edgelist.shape[0]):
-        # cv2.line(blank_image, edgelist[i-1, 0], edgelist[i, 0], color=(0, 255, 0), thickness=2)
-        # cv2.line(blank_image, (edgelist.item(i-3), edgelist.item(i-2)), (edgelist.item(i-1), edgelist.item(i)), color=(0, 255, 0), thickness=2)
-    cv2.imshow("window", blank_image)
+        # Find the length of the arrays for index positions.
+        # Either array can do since the points are in pairs.
+        listlen = x.size - 1
+        for i in range(listlen):
+            # Draw the line segments.
+            cv2.line(blank_image, (x[i], y[i]), (x[i + 1], y[i + 1]), (0, 255, 255), thickness=2)
+        # Join the first and last line of the contour.
+        cv2.line(blank_image, (x[0], y[0]), (x[listlen], y[listlen]), (0, 255, 0), thickness=2)
+
+    # Display the edge list.
+    cv2.imshow("Edge list", blank_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
-
