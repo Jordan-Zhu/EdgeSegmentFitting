@@ -1,10 +1,8 @@
-import numpy as np
 import cv2
-import matplotlib.pyplot as plt
+import numpy as np
 
-from lineseg import lineseg
-from drawedgelist import drawedgelist
-
+from ES_Drawing.lineseg import lineseg
+from ES_Drawing.drawedgelist import drawedgelist
 
 
 def find_contours(im):
@@ -12,47 +10,41 @@ def find_contours(im):
     imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
     ret, thresh = cv2.threshold(imgray, 127, 255, 0)
     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
+    # cv2.RETR_EXTERNAL cv2.RETR_CCOMP
     # show contours
-    # cv2.drawContours(im, contours, -1, (0, 255, 0), 1)
+    cv2.drawContours(im, contours, -1, (0, 255, 0), 1)
 
     # Display the image.
-    # cv2.imshow("window", im)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    cv2.imshow("window", im)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
     return contours
 
 
 if __name__ == '__main__':
-    img = cv2.imread('test.png')
+    img = cv2.imread('canny_img2.png')
 
-    find_len = find_contours(img)
-    len = len(find_len)
+    # find_len = find_contours(img)
+    # len = len(find_len)
 
     data = np.asarray(find_contours(img))
-    print 'data shape ', data.shape[0]
+    # print 'data shape ', data.shape[0]
 
     seglist = lineseg(data, tol=2)
+    # ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+    # print seglist
+    # for i in seglist:
+    #     print seglist.index(i.any())
+
+    drawedgelist(seglist, rowscols=[])
 
     # for i in seglist[0][:, 0]:
     #     x.append(seglist[0][i, 0])
-    x = seglist[0][:, 0]
-    y = seglist[0][:, 1]
-    print 'x ', x[1]
-    print 'y ', seglist[0][:, 1]
-
-    for n in seglist:
-        x = seglist[n][:, 0]
-        y = seglist[n][:, 1]
-        for i in range(x.size - 1):
-            cv2.line(img, (x[i], y[i]), (x[i + 1], y[i + 1]), (0, 255, 255), thickness=2)
-    #
-    cv2.imshow("window", img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-    # drawedgelist(seglist, rowscols=[480, 640])
+    # x = seglist[1][:, 0]
+    # y = seglist[1][:, 1]
+    # print 'x ', x[0]
+    # print 'y ', seglist[0][:, 1]
 
 
     # for n in range(x.shape[0] - 1):

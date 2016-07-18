@@ -1,8 +1,6 @@
 import numpy as np
-import cv2
 
-from ES_Drawing.drawedgelist import drawedgelist
-from ES_Drawing.lineseg import lineseg
+from ES_Drawing.old_code.drawedgelist_old import drawedgelist
 
 if __name__ == '__main__':
     rowscols = [480, 640]
