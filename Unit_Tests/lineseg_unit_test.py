@@ -17,10 +17,17 @@ def find_contours(im):
     # Just consider the contours that don't have a child
     # that is hierarchy[i][2] < 0
 
-    for e in hierarchy:
-        if hierarchy[e][2] < 0:
-            print hierarchy[e][2]
-    cv2.drawContours(im, contours, -1, (0, 255, 0), 1)
+    # print hierarchy[0][1, 2]
+    print contours[0]
+    newcontours = []
+    for i in xrange(len(contours)):
+        print hierarchy[0][i, 2]
+        if hierarchy[0][i, 2] < 0:
+            print hierarchy[0][i, 2]
+            newcontours.append(contours[i])
+
+    cv2.drawContours(im, newcontours, -1, (0, 255, 0), 1)
+    contours = newcontours
 
     # Display the image.
     cv2.imshow("window", im)
