@@ -1,17 +1,25 @@
 import cv2
 import numpy as np
 
-from ES_Drawing.lineseg import lineseg
-from ES_Drawing.drawedgelist import drawedgelist
+from lineseg import lineseg
+from drawedgelist import drawedgelist
 
 
 def find_contours(im):
     # im = cv2.imread('circle.png')
     imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
     ret, thresh = cv2.threshold(imgray, 127, 255, 0)
-    contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(thresh, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
     # cv2.RETR_EXTERNAL cv2.RETR_CCOMP
     # show contours
+    print contours
+    print hierarchy
+    # Just consider the contours that don't have a child
+    # that is hierarchy[i][2] < 0
+
+    for e in hierarchy:
+        if hierarchy[e][2] < 0:
+            print hierarchy[e][2]
     cv2.drawContours(im, contours, -1, (0, 255, 0), 1)
 
     # Display the image.
@@ -23,10 +31,7 @@ def find_contours(im):
 
 
 if __name__ == '__main__':
-    img = cv2.imread('canny_img2.png')
-
-    # find_len = find_contours(img)
-    # len = len(find_len)
+    img = cv2.imread('test.png')
 
     data = np.asarray(find_contours(img))
     # print 'data shape ', data.shape[0]
@@ -34,10 +39,11 @@ if __name__ == '__main__':
     seglist = lineseg(data, tol=2)
     # ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
     # print seglist
-    # for i in seglist:
-    #     print seglist.index(i.any())
 
-    drawedgelist(seglist, rowscols=[])
+    # for index, item in enumerate(seglist):
+    #     print index
+
+    drawedgelist(seglist, rowscols=[480, 640])
 
     # for i in seglist[0][:, 0]:
     #     x.append(seglist[0][i, 0])
@@ -57,10 +63,10 @@ if __name__ == '__main__':
     # cv2.destroyAllWindows()
 
     # reshape array
-    temp = []
-    for i in xrange(data.shape[0]):
-        arr = np.squeeze(data[i])
-        temp.append(arr)
+    # temp = []
+    # for i in xrange(data.shape[0]):
+    #     arr = np.squeeze(data[i])
+    #     temp.append(arr)
 
     # temp = np.asarray(temp)
     # print 'x ', temp[0][:, 0]
