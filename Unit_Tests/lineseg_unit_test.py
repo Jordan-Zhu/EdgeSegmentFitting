@@ -26,7 +26,7 @@ def find_contours(im):
             print hierarchy[0][i, 2]
             newcontours.append(contours[i])
 
-    cv2.drawContours(im, newcontours, -1, (0, 255, 0), 1)
+    cv2.drawContours(im, newcontours, 2, (0, 255, 0), 1)
     contours = newcontours
 
     # Display the image.
@@ -38,7 +38,7 @@ def find_contours(im):
 
 
 if __name__ == '__main__':
-    img = cv2.imread('test.png')
+    img = cv2.imread('canny_img2.png')
 
     data = np.asarray(find_contours(img))
     # print 'data shape ', data.shape[0]

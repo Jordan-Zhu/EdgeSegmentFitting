@@ -62,7 +62,7 @@ def maxlinedev(x, y):
     else:
         # Endpoint distances are coincident (they're the same point),
         # so calculate distances from first point.
-        dist_contour = math.sqrt(np.power(x - x[0], 2) + np.power(y - y[0], 2))
+        dist_contour = np.sqrt(np.power(x - x[0], 2) + np.power(y - y[0], 2))
 
     # Set endpoint distance to 1 so that normalized error can be used. ???
     endpt_dist = 1
