@@ -100,7 +100,7 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             del line_new[max(combinations[k][0], combinations[k][0])]
                             del line_new[min(combinations[k][0], combinations[k][0])]
 
-                            
+
                         else:
                             k += 1
                             continue
