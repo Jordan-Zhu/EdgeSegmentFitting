@@ -63,7 +63,9 @@ def merge_lines(inputline, listpt, thresh, imgsize):
             k = 0
             while k < len(combinations):
                 # See if the angles are different.
-                delta_slope = abs(line_new[combinations[k][0]][6] - line_new[combinations[k][1]][6])
+                angle1 = line_new[combinations[k][0]][6]
+                angle2 = line_new[combinations[k][1]][6]
+                delta_slope = abs(angle1 - angle2)
 
                 if delta_slope < thresh:
                     line1 = [line_new[combinations[k][0]][8], line_new[combinations[k][0]][9]]
@@ -76,6 +78,34 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                         ptx = set(ptx)
                         setdiff = [x for x in [line1, line2] if x not in ptx]
                         setdiff = np.unique(setdiff)
+
+                        line1 = line_new[combinations[k][0]][:]
+                        line2 = line_new[combinations[k][0]][:]
+                        ind1 = setdiff[0]
+                        ind2 = setdiff[1]
+                        [y1, x1] = np.unravel_index(imgsize, ind1)
+                        [y2, x2] = np.unravel_index(imgsize, ind2)
+
+                        # Slope of the new line.
+                        m = (y2 - y1) / (x2 - x1)
+                        # Length of the new line.
+                        newlen = np.sqrt(np.power((x2 - x1), 2) + np.power((y2 - y1), 2))
+                        # Angle of the new line.
+                        newang = math.atan2(-m)
+                        newang = math.degrees(newang)
+
+                        # New angle's intersection point lies between the two lines
+                        if newang >= min(angle1, angle2) and max(angle1, angle2) >= newang:
+                            # Remove from the line feature list those lines we merged.
+                            del line_new[max(combinations[k][0], combinations[k][0])]
+                            del line_new[min(combinations[k][0], combinations[k][0])]
+
+                            
+                        else:
+                            k += 1
+                            continue
+
+
 
                     else:
                         k += 1
