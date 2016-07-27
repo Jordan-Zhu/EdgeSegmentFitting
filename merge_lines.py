@@ -28,6 +28,7 @@ import numpy as np
 
 def merge_lines(inputline, listpt, thresh, imgsize):
     # Merge lines.
+    listpt_new = listpt
     line_new = inputline
     line_merged_n = []
     # for i in inputline.shape[0]:
@@ -89,41 +90,75 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                         [y2, x2] = np.unravel_index(imgsize, ind2)
 
                         # Slope of the new line.
-                        m = (y2 - y1) / (x2 - x1)
+                        slope = (y2 - y1) / (x2 - x1)
                         # Length of the new line.
                         newlen = np.sqrt(np.power((x2 - x1), 2) + np.power((y2 - y1), 2))
                         # Angle of the new line.
-                        newang = math.atan(-m)
+                        newang = math.atan(-slope)
                         newang = math.degrees(newang)
 
                         # New angle's intersection point lies between the two lines
                         if newang >= min(angle1, angle2) and max(angle1, angle2) >= newang:
                             # Remove from the line feature list those lines we merged.
-                            del line_new[max(combo1, combo2)]
-                            del line_new[min(combo1, combo2)]
-
-                            # Start point/end
-                            line_merged_n[max(combo1, combo2)] = []
-                            line_merged_n[min(combo1, combo2)] = []
+                            # This leaves an empty list at the index location.
+                            del line_new[max(combo1, combo2)][:]
+                            del line_new[min(combo1, combo2)][:]
 
                             idx1 = line_merged_n[combo1]
                             idx2 = line_merged_n[combo2]
+
+                            # Start point/end
+                            del line_merged_n[max(combo1, combo2)]
+                            del line_merged_n[min(combo1, combo2)]
 
                             count = 0
                             # Extend to include which lines were merged.
                             line_merged_n[count].extend([idx1, idx2])
                             count += 1
 
-                            # Merge the listpoints. 
+                            # Merge the listpoints.
+                            lppair1 = listpt_new[combo1]
+                            lppair2 = listpt_new[combo2]
+                            # Find line segments with the same point.
+                            # (These are f1, f2, f3, and f4 in matlab code)
+                            startpt1 = [i for i, x in enumerate(lppair1) if x == ind1]
+                            startpt2 = [i for i, x in enumerate(lppair1) if x == ind2]
 
+                            startpt3 = [i for i, x in enumerate(lppair2) if x == ind1]
+                            startpt4 = [i for i, x in enumerate(lppair2) if x == ind2]
 
+                            # We find which line contains the starting and ending points.
+                            if not startpt1:
+                                line_start = lppair2
+                                line_end = lppair1
+
+                                if startpt3 > 1:
+                                    line_start = list(reversed(line_start))
+                                if startpt2 == 1:
+                                    line_end = list(reversed(line_end))
+                            else:
+                                line_start = lppair1
+                                line_end = lppair2
+
+                                if startpt1 > 1:
+                                    line_start = list(reversed(line_start))
+                                if startpt4 == 1:
+                                    line_end = list(reversed(line_end))
+
+                            del listpt_new[max(combo1, combo2)]
+                            del listpt_new[min(combo1, combo2)]
+                            listpt_new[count] = [line_start[0: len(line_start) - 1], line_end]
+
+                            # In case the condition is true,
+                            # it doesn't check for the other pairs.
+                            k += 1
                         else:
                             k += 1
                             continue
 
 
-
                     else:
+                        # Count for the next pair
                         k += 1
                         continue
 
@@ -133,3 +168,7 @@ def merge_lines(inputline, listpt, thresh, imgsize):
 
 
 
+
+    m = len(line_new)
+    # Find how to get specific column in sublists.
+    # line_new[:, 8] =
