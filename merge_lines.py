@@ -29,9 +29,9 @@ import numpy as np
 def merge_lines(inputline, listpt, thresh, imgsize):
     # Merge lines.
     line_new = inputline
-    newmergedline = []
-    for i in inputline.shape[0]:
-        newmergedline[i] = i
+    line_merged_n = []
+    # for i in inputline.shape[0]:
+    #     line_merged_n[i] = i
 
     # temp = inputline[:, 9:10]
     # Index 9 and 10 are the start and end points of a line in this array.
@@ -62,14 +62,16 @@ def merge_lines(inputline, listpt, thresh, imgsize):
 
             k = 0
             while k < len(combinations):
+                combo1 = combinations[k][0]
+                combo2 = combinations[k][1]
                 # See if the angles are different.
-                angle1 = line_new[combinations[k][0]][6]
-                angle2 = line_new[combinations[k][1]][6]
+                angle1 = line_new[combo1][6]
+                angle2 = line_new[combo2][6]
                 delta_slope = abs(angle1 - angle2)
 
                 if delta_slope < thresh:
-                    line1 = [line_new[combinations[k][0]][8], line_new[combinations[k][0]][9]]
-                    line2 = [line_new[combinations[k][1]][8], line_new[combinations[k][1]][9]]
+                    line1 = [line_new[combo1][8], line_new[combo1][9]]
+                    line2 = [line_new[combo2][8], line_new[combo2][9]]
 
                     # If there exists more than one place the lines intersect,
                     # it means they are not exactly the same.
@@ -79,8 +81,8 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                         setdiff = [x for x in [line1, line2] if x not in ptx]
                         setdiff = np.unique(setdiff)
 
-                        line1 = line_new[combinations[k][0]][:]
-                        line2 = line_new[combinations[k][0]][:]
+                        line1 = line_new[combo1][:]
+                        line2 = line_new[combo2][:]
                         ind1 = setdiff[0]
                         ind2 = setdiff[1]
                         [y1, x1] = np.unravel_index(imgsize, ind1)
@@ -91,14 +93,28 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                         # Length of the new line.
                         newlen = np.sqrt(np.power((x2 - x1), 2) + np.power((y2 - y1), 2))
                         # Angle of the new line.
-                        newang = math.atan2(-m)
+                        newang = math.atan(-m)
                         newang = math.degrees(newang)
 
                         # New angle's intersection point lies between the two lines
                         if newang >= min(angle1, angle2) and max(angle1, angle2) >= newang:
                             # Remove from the line feature list those lines we merged.
-                            del line_new[max(combinations[k][0], combinations[k][0])]
-                            del line_new[min(combinations[k][0], combinations[k][0])]
+                            del line_new[max(combo1, combo2)]
+                            del line_new[min(combo1, combo2)]
+
+                            # Start point/end
+                            line_merged_n[max(combo1, combo2)] = []
+                            line_merged_n[min(combo1, combo2)] = []
+
+                            idx1 = line_merged_n[combo1]
+                            idx2 = line_merged_n[combo2]
+
+                            count = 0
+                            # Extend to include which lines were merged.
+                            line_merged_n[count].extend([idx1, idx2])
+                            count += 1
+
+                            # Merge the listpoints. 
 
 
                         else:
