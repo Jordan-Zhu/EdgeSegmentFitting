@@ -2,7 +2,7 @@ import math
 import numpy as np
 import cv2
 
-from ES_Drawing.maxlinedev import maxlinedev
+from maxlinedev import maxlinedev
 
 def find_contours():
     im = cv2.imread('circle.png')

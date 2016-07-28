@@ -13,7 +13,7 @@
 #           imgsize   -
 #
 # Returns:
-#           [newline,newlistpt,newmergedline] - Tuple of lines.
+#           [line_new, listpt_new, line_merged_n] - Tuple of lines.
 #
 # See also: Lseg_to_Lfeat_v2
 #           LabelLineCurveFeature_v2
@@ -166,9 +166,9 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                     k += 1
                     continue
 
-
-
-
     m = len(line_new)
     # Find how to get specific column in sublists.
-    # line_new[:, 8] =
+    line_new = np.asarray(line_new)
+    # Labels the line with an index number so we can refer back to it later.
+    line_new[:,7] = [index for index, item in enumerate(line_new)]
+    return line_new, listpt_new, line_merged_n
