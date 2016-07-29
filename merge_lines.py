@@ -38,7 +38,10 @@ def merge_lines(inputline, listpt, thresh, imgsize):
     # Index 9 and 10 are the start and end points of a line in this array.
     unique_pts = np.unique(inputline[8:10])
     unique_pts = np.sort(unique_pts)
+    print 'unique pts ', unique_pts.shape
 
+    # unique pts shape = (18, )
+    # TO-DO: loop through the shape part of array
     for i in unique_pts:
         ptx = unique_pts[i]
         # Find line segments with the same point.
@@ -170,5 +173,6 @@ def merge_lines(inputline, listpt, thresh, imgsize):
     # Find how to get specific column in sublists.
     line_new = np.asarray(line_new)
     # Labels the line with an index number so we can refer back to it later.
+    print 'line_new shape = ', line_new
     line_new[:,7] = [index for index, item in enumerate(line_new)]
     return line_new, listpt_new, line_merged_n
