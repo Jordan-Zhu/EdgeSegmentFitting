@@ -8,7 +8,7 @@ from sioloadmat import loadmat
 if __name__ == '__main__':
     line_in = loadmat('linefeature.mat')
     listpt = loadmat('listpointc.mat')
-    print line_in.shape
+    print line_in[0]
 
     merge_lines(line_in, listpt, thresh=10, imgsize=640*480)
-    print 'done'
+    # print 'done'

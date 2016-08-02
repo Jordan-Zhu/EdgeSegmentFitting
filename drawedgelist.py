@@ -41,6 +41,7 @@ def drawedgelist(edgelist, *args, **kwargs):
         # Get the image size from the argument passed.
         blank_image = np.zeros((rowscols[0], rowscols[1], 3), np.uint8)
 
+    print edgelist
     for n in edgelist:
         # Loop through the edge segment arrays in edgelist.
         idx = edgelist.index(n)

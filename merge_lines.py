@@ -36,16 +36,23 @@ def merge_lines(inputline, listpt, thresh, imgsize):
 
     # temp = inputline[:, 9:10]
     # Index 9 and 10 are the start and end points of a line in this array.
-    unique_pts = np.unique(inputline[8:10])
+    unique_pts = np.unique(inputline[:, 8:10])
+    # print 'unique pts ', unique_pts.shape
+    # unique_pts = np.reshape(unique_pts, (unique_pts.shape[0] * unique_pts.shape[1], 1))
     unique_pts = np.sort(unique_pts)
     print 'unique pts ', unique_pts.shape
 
     # unique pts shape = (18, )
     # TO-DO: loop through the shape part of array
-    for i in unique_pts:
+    for i, items in enumerate(unique_pts):
         ptx = unique_pts[i]
+        print 'ptx = ', ptx
+        # print 'line new = ', line_new
         # Find line segments with the same point.
-        line_indices = [i for i, x in enumerate(line_new) if x == ptx]
+        # line_indices = [i for i, x in enumerate(line_new) if x == ptx]
+        line_indices = []
+        line_indices.append(np.where(line_new == ptx)[0])
+        print 'line indices = ', line_indices
         # Number of lines with the same point.
         coincident_pts = len(line_indices)
 
@@ -173,6 +180,6 @@ def merge_lines(inputline, listpt, thresh, imgsize):
     # Find how to get specific column in sublists.
     line_new = np.asarray(line_new)
     # Labels the line with an index number so we can refer back to it later.
-    print 'line_new shape = ', line_new
+    # print 'line_new shape = ', line_new
     line_new[:,7] = [index for index, item in enumerate(line_new)]
     return line_new, listpt_new, line_merged_n
