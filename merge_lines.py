@@ -52,7 +52,7 @@ def merge_lines(inputline, listpt, thresh, imgsize):
         # line_indices = [i for i, x in enumerate(line_new) if x == ptx]
         line_indices = []
         line_indices.append(np.where(line_new == ptx)[0])
-        print 'line indices = ', line_indices
+        # print 'line indices = ', line_indices
         # Number of lines with the same point.
         coincident_pts = len(line_indices)
 
