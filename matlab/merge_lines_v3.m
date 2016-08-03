@@ -1,6 +1,6 @@
 
 % Run this line in matlab with the matrix data in the workspace
-% to run: [Line_new,ListPoint_new,Line_merged_n] = merge_lines_v3(LineFeatureC1,ListPointC1,10, [424 512])
+% to run: [Line_new2,ListPoint_new,Line_merged_n] = merge_lines_v3(LineFeatureC1,ListPointC1,10, [424 512])
 function [Line_new,ListPoint_new,Line_merged_n] = merge_lines_v3(LineIn,ListPoint,thresh_m, imgsize)
 
 %LineFeature(c0,:) = [1-y1 2-x1 3-y2 4-x2 5-L 6-m 7-alpha 8-c0 9-lind1 10-lind2]
