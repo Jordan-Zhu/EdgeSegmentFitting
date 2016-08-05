@@ -31,8 +31,8 @@ def merge_lines(inputline, listpt, thresh, imgsize):
     listpt_new = listpt
     line_new = inputline
     line_merged_n = []
-    # for i in inputline.shape[0]:
-    #     line_merged_n[i] = i
+    for i in xrange(0, inputline.shape[0]):
+        line_merged_n.append([i])
 
     # temp = inputline[:, 9:10]
     # Index 9 and 10 are the start and end points of a line in this array.
@@ -103,11 +103,11 @@ def merge_lines(inputline, listpt, thresh, imgsize):
 
                         line1 = line_new[combo1][:]
                         line2 = line_new[combo2][:]
-                        ind1 = [int(setdiff[0])]
-                        ind2 = [int(setdiff[1])]
+                        ind1 = int(setdiff[0])
+                        ind2 = int(setdiff[1])
                         print 'ind1 and ind2 ', ind1, ind2
-                        [y1, x1] = np.unravel_index(ind1, imgsize)
-                        [y2, x2] = np.unravel_index(ind2, imgsize)
+                        [y1, x1] = np.unravel_index([ind1], imgsize)
+                        [y2, x2] = np.unravel_index([ind2], imgsize)
 
                         # Slope of the new line.
                         slope = (y2 - y1) / (x2 - x1)
@@ -118,28 +118,34 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                         newang = math.degrees(newang)
 
                         # New angle's intersection point lies between the two lines
-                        if newang >= min(angle1, angle2) and max(angle1, angle2) >= newang:
+                        if min(angle1, angle2) <= newang <= max(angle1, angle2):
                             # Remove from the line feature list those lines we merged.
                             # This leaves an empty list at the index location.
                             # del line_new, line_new[max(combo1, combo2)][:]
+                            startpt = max(combo1, combo2)
+                            endpt = min(combo1, combo2)
                             print 'max ', max(combo1, combo2), ' min ', min(combo1, combo2)
-                            line_new[max(combo1, combo2)][:] = 0
-                            line_new[min(combo1, combo2)][:] = 0
-                            # line_new = np.delete(line_new, line_new[max(combo1, combo2)], 0)
-                            # line_new = np.delete(line_new, line_new[min(combo1, combo2)], 0)
+                            # line_new[max(combo1, combo2)][:] = 0
+                            # line_new[min(combo1, combo2)][:] = 0
+                            line_new = np.delete(line_new, line_new[startpt], 0)
+                            line_new = np.delete(line_new, line_new[endpt], 0)
 
 
-                            # idx1 = line_merged_n[combo1]
-                            # idx2 = line_merged_n[combo2]
+                            idx1 = line_merged_n[combo1]
+                            idx2 = line_merged_n[combo2]
 
                             # Start point/end
-                            del line_merged_n[max(combo1, combo2)]
-                            del line_merged_n[min(combo1, combo2)]
+                            line_merged_n = np.delete(line_merged_n, line_merged_n[startpt])
+                            line_merged_n = np.delete(line_merged_n, line_merged_n[endpt])
 
-                            count = 0
+                            # line_new = np.append(line_new, [x1, y1, x2, y2, newlen, slope, newang, 0, ind1, ind2])
+                            count = line_new.shape[0]
+                            print 'count ', count
+                            line_new = np.append(line_new, [x1, y1, x2, y2, newlen, slope, newang, 0, ind1, ind2])
                             # Extend to include which lines were merged.
+                            print 'line_merged_n ', count, ' ', line_merged_n[count]
                             line_merged_n[count].extend([combo1, combo2])
-                            count += 1
+                            # count += 1
 
                             # Merge the listpoints.
                             lppair1 = listpt_new[combo1]
