@@ -103,11 +103,11 @@ def merge_lines(inputline, listpt, thresh, imgsize):
 
                         line1 = line_new[combo1][:]
                         line2 = line_new[combo2][:]
-                        ind1 = setdiff[0]
-                        ind2 = setdiff[1]
+                        ind1 = [int(setdiff[0])]
+                        ind2 = [int(setdiff[1])]
                         print 'ind1 and ind2 ', ind1, ind2
-                        [y1, x1] = np.unravel_index(imgsize, ind1)
-                        [y2, x2] = np.unravel_index(imgsize, ind2)
+                        [y1, x1] = np.unravel_index(ind1, imgsize)
+                        [y2, x2] = np.unravel_index(ind2, imgsize)
 
                         # Slope of the new line.
                         slope = (y2 - y1) / (x2 - x1)
@@ -121,11 +121,16 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                         if newang >= min(angle1, angle2) and max(angle1, angle2) >= newang:
                             # Remove from the line feature list those lines we merged.
                             # This leaves an empty list at the index location.
-                            del line_new[max(combo1, combo2)][:]
-                            del line_new[min(combo1, combo2)][:]
+                            # del line_new, line_new[max(combo1, combo2)][:]
+                            print 'max ', max(combo1, combo2), ' min ', min(combo1, combo2)
+                            line_new[max(combo1, combo2)][:] = 0
+                            line_new[min(combo1, combo2)][:] = 0
+                            # line_new = np.delete(line_new, line_new[max(combo1, combo2)], 0)
+                            # line_new = np.delete(line_new, line_new[min(combo1, combo2)], 0)
 
-                            idx1 = line_merged_n[combo1]
-                            idx2 = line_merged_n[combo2]
+
+                            # idx1 = line_merged_n[combo1]
+                            # idx2 = line_merged_n[combo2]
 
                             # Start point/end
                             del line_merged_n[max(combo1, combo2)]
@@ -133,7 +138,7 @@ def merge_lines(inputline, listpt, thresh, imgsize):
 
                             count = 0
                             # Extend to include which lines were merged.
-                            line_merged_n[count].extend([idx1, idx2])
+                            line_merged_n[count].extend([combo1, combo2])
                             count += 1
 
                             # Merge the listpoints.

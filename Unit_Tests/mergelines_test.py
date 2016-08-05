@@ -11,4 +11,4 @@ if __name__ == '__main__':
     print 'Line feature shape', line_in.shape, 'list point shape ', listpt.shape
     # print 'List point: ', listpt
 
-    merge_lines(line_in, listpt, thresh=10, imgsize=640*480)
+    merge_lines(line_in, listpt, thresh=10, imgsize=[640, 480])

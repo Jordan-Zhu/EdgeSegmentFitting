@@ -76,7 +76,7 @@ for ii=1:length(Lpt)
                         Line_merged_n(min(M(cnt3,1),M(cnt3,2))) = [] ; 
                         [c0,~] = size(Line_new) ;
                         Line_new(c0+1,:) = [y1 x1 y2 x2 L m alpha 0 ind1 ind2] ; % start point/end point/length/slope/angle/number/label
-                        Line_merged_n{c0+1} = [jj1 jj2] ; 
+                        Line_merged_n{c0+1} = [jj1 jj2] ; % append index positions to end of line merged
                         
                         % merge the ListPoints
                         Lpp1 = ListPoint_new{M(cnt3,1)} ;
