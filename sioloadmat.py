@@ -2,7 +2,7 @@ import scipy.io as sio
 import numpy as np
 
 def loadmat(mat):
-    data = sio.loadmat(mat)
+    data = sio.loadmat(mat, mat_dtype=True)
     listings = list(data)
 
     # Outputs array of arrays if matrix is a cell array.
@@ -17,4 +17,4 @@ def loadmat(mat):
 if __name__ == '__main__':
     data = sio.loadmat('Unit_Tests/listpointc.mat')
 
-    print loadmat('Unit_Tests/listpointc.mat').shape
+    print loadmat('Unit_Tests/listpointc.mat')

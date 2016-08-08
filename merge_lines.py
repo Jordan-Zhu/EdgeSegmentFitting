@@ -34,6 +34,8 @@ def merge_lines(inputline, listpt, thresh, imgsize):
     for i in xrange(0, inputline.shape[0]):
         line_merged_n.append([i])
 
+
+    print 'line merged n ', line_merged_n[307], 'line merged shape ', len(line_merged_n)
     # temp = inputline[:, 9:10]
     # Index 9 and 10 are the start and end points of a line in this array.
     unique_pts = np.unique(inputline[:, 8:10])
@@ -135,8 +137,10 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             idx2 = line_merged_n[combo2]
 
                             # Start point/end
-                            line_merged_n = np.delete(line_merged_n, line_merged_n[startpt])
-                            line_merged_n = np.delete(line_merged_n, line_merged_n[endpt])
+                            # line_merged_n = np.delete(line_merged_n, line_merged_n[startpt])
+                            # line_merged_n = np.delete(line_merged_n, line_merged_n[endpt])
+                            line_merged_n.pop(startpt)
+                            line_merged_n.pop(endpt)
 
                             # line_new = np.append(line_new, [x1, y1, x2, y2, newlen, slope, newang, 0, ind1, ind2])
                             count = line_new.shape[0]
@@ -150,13 +154,17 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             # Merge the listpoints.
                             lppair1 = listpt_new[combo1]
                             lppair2 = listpt_new[combo2]
+                            # print 'lppair1 and lppair2 ', lppair1, lppair2
+
                             # Find line segments with the same point.
                             # (These are f1, f2, f3, and f4 in matlab code)
-                            startpt1 = [i for i, x in enumerate(lppair1) if x == ind1]
-                            startpt2 = [i for i, x in enumerate(lppair1) if x == ind2]
+                            # startpt1 = [i for i, x in enumerate(lppair1) if x == ind1]
+                            # startpt2 = [i for i, x in enumerate(lppair1) if x == ind2]
+                            startpt1 = np.where(lppair1 == ind1)[0]
+                            startpt2 = np.where(lppair1 == ind2)[0]
 
-                            startpt3 = [i for i, x in enumerate(lppair2) if x == ind1]
-                            startpt4 = [i for i, x in enumerate(lppair2) if x == ind2]
+                            startpt3 = np.where(lppair2 == ind1)
+                            startpt4 = np.where(lppair2 == ind2)
 
                             # We find which line contains the starting and ending points.
                             if not startpt1:
@@ -176,8 +184,12 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                                 if startpt4 == 1:
                                     line_end = list(reversed(line_end))
 
-                            del listpt_new[max(combo1, combo2)]
-                            del listpt_new[min(combo1, combo2)]
+                            # del listpt_new[max(combo1, combo2)]
+                            # del listpt_new[min(combo1, combo2)]
+                            print 'listpt new shape ', listpt_new.dtype
+                            print 'start pt ', startpt, ' end pt ', endpt
+                            listpt_new = np.delete(listpt_new, listpt_new[startpt], 0)
+                            listpt_new = np.delete(listpt_new, listpt_new[endpt], 0)
                             listpt_new[count] = [line_start[0: len(line_start) - 1], line_end]
 
                             # In case the condition is true,
