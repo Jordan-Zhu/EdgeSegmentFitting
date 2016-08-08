@@ -80,6 +80,7 @@ def merge_lines(inputline, listpt, thresh, imgsize):
             while k < len(combinations):
                 combo1 = combinations[k][0]
                 combo2 = combinations[k][1]
+
                 # See if the angles are different.
                 angle1 = line_new[combo1][6]
                 angle2 = line_new[combo2][6]
@@ -188,9 +189,12 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             # del listpt_new[min(combo1, combo2)]
                             print 'listpt new shape ', listpt_new.dtype
                             print 'start pt ', startpt, ' end pt ', endpt
-                            listpt_new = np.delete(listpt_new, listpt_new[startpt], 0)
-                            listpt_new = np.delete(listpt_new, listpt_new[endpt], 0)
+                            listpt_new = listpt_new.tolist()
+                            listpt_new.pop(startpt)
+                            listpt_new.pop(endpt)
+
                             listpt_new[count] = [line_start[0: len(line_start) - 1], line_end]
+                            # print 'listpt_new ', listpt_new
 
                             # In case the condition is true,
                             # it doesn't check for the other pairs.
