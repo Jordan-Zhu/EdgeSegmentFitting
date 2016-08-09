@@ -7,13 +7,19 @@
 # Usage:    merge_lines(inputline, listpt, thresh, imgsize)
 #
 # Arguments:
-#           inputline -
-#           listpt    -
-#           thresh    -
-#           imgsize   -
+#           inputline - 2D array of size m x 10 containing all the lines
+#                       in the shape of [x1, y1, x2, y2, length, slope, angle, index, pixel1, pixel2]
+#           listpt    - Cell array / array of arrays of size m x 1.
+#                       Lists which lines are connected.
+#           thresh    - Maximum deviation that the lines can be from standard in order for this to run.
+#           imgsize   - m x n of the image.
 #
 # Returns:
-#           [line_new, listpt_new, line_merged_n] - Tuple of lines.
+#           [line_new, listpt_new, line_merged_n]
+#
+# This function merges and links together coordinate pairs to join small line fragments.
+# Where line segments are found with the same start or end points,
+# it is further processed to see if these multiple lines can be merged into one.
 #
 # See also: Lseg_to_Lfeat_v2
 #           LabelLineCurveFeature_v2
@@ -35,6 +41,7 @@ def merge_lines(inputline, listpt, thresh, imgsize):
         line_merged_n.append([i])
 
 
+    print 'line new ', line_new.dtype
     print 'line merged n ', line_merged_n[307], 'line merged shape ', len(line_merged_n)
     # temp = inputline[:, 9:10]
     # Index 9 and 10 are the start and end points of a line in this array.
@@ -44,19 +51,19 @@ def merge_lines(inputline, listpt, thresh, imgsize):
     unique_pts = np.sort(unique_pts)
 
     # unique pts shape = (18, )
-    # TO-DO: loop through the shape part of array
+    # TO-DO: loop through the shape part of array (DONE)
     for i, items in enumerate(unique_pts):
         ptx = unique_pts[i]
-        # print 'ptx = ', unique_pts[0]
 
-        # Find line segments with the same point.
         # line_indices = [i for i, x in enumerate(line_new) if x == ptx]
         # line_indices = []
 
+        # Find line segments with the same point.
         line_indices = np.where(line_new == ptx)[0]
 
         # Number of lines with the same point.
         coincident_pts = line_indices.size
+        print '========================== '
         print 'coincident points = ', coincident_pts
 
         # If there is more than one such line segment,
@@ -66,22 +73,26 @@ def merge_lines(inputline, listpt, thresh, imgsize):
             print 'line indices ', line_indices
 
             # Find possible combinations of these lines.
-            # temp = []
             combinations = []
             for i in xrange(0, len(line_indices) - 1):
                 pt1 = line_indices[i]
                 for j in xrange(i + 1, len(line_indices)):
                     pt2 = line_indices[j]
-                    # temp.append([pt1, pt2])
                     combinations.append([pt1, pt2])
+            print 'line new curr ', line_new[307]
             print 'combinations ', combinations
 
+            # Loop through each of the line combinations.
             k = 0
             while k < len(combinations):
+                print 'k = ', k, ' combo length ', len(combinations)
                 combo1 = combinations[k][0]
                 combo2 = combinations[k][1]
 
-                # See if the angles are different.
+                # Calculate the change in slope.
+                print 'combo ', combo1, ' combo 2 ', combo2
+                print 'line new size ', len(line_new)
+                print 'angles1 ',  len(line_new[combo1]), ' angle2 ', len(line_new[combo2])
                 angle1 = line_new[combo1][6]
                 angle2 = line_new[combo2][6]
                 print 'angles ', angle1, ' ', angle2
@@ -89,6 +100,8 @@ def merge_lines(inputline, listpt, thresh, imgsize):
 
                 print 'delta slope ', delta_slope
 
+                # If the change in slope is within the bounds of the threshold,
+                # do this. Else, get the next combination to try.
                 if delta_slope < thresh:
                     line1 = [line_new[combo1][8], line_new[combo1][9]]
                     line2 = [line_new[combo2][8], line_new[combo2][9]]
@@ -98,14 +111,13 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                     # it means they are not exactly the same.
                     if len(set(line1).intersection(line2)) < 2:
                         # Use set difference to get the start and end points of new line.
-                        # Make ptx a set.
-                        # ptx = {ptx}
                         setdiff = [x for x in line1 + line2 if x not in {ptx}]
                         setdiff = np.unique(setdiff)
                         print 'setdiff ', setdiff
 
-                        line1 = line_new[combo1][:]
-                        line2 = line_new[combo2][:]
+                        # line1 = line_new[combo1][:]
+                        # line2 = line_new[combo2][:]
+
                         ind1 = int(setdiff[0])
                         ind2 = int(setdiff[1])
                         print 'ind1 and ind2 ', ind1, ind2
@@ -146,7 +158,9 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             # line_new = np.append(line_new, [x1, y1, x2, y2, newlen, slope, newang, 0, ind1, ind2])
                             count = line_new.shape[0]
                             print 'count ', count
-                            line_new = np.append(line_new, [x1, y1, x2, y2, newlen, slope, newang, 0, ind1, ind2])
+                            line_new = line_new.tolist()
+                            line_new.append([x1[0], y1[0], x2[0], y2[0], newlen[0], slope[0], newang, 0, ind1, ind2])
+                            print 'line new append ', line_new[count]
                             # Extend to include which lines were merged.
                             print 'line_merged_n ', count, ' ', line_merged_n[count]
                             line_merged_n[count].extend([combo1, combo2])
@@ -194,6 +208,7 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             listpt_new.pop(endpt)
 
                             listpt_new[count] = [line_start[0: len(line_start) - 1], line_end]
+                            listpt_new = np.asarray(listpt_new)
                             # print 'listpt_new ', listpt_new
 
                             # In case the condition is true,
@@ -203,20 +218,24 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             k += 1
                             continue
 
-
                     else:
                         # Count for the next pair
                         k += 1
                         continue
 
                 else:
+                    # Count for next pair
                     k += 1
                     continue
+
+    # Have not reached here yet
 
     # m = len(line_new)
     # Find how to get specific column in sublists.
     line_new = np.asarray(line_new)
+
     # Labels the line with an index number so we can refer back to it later.
     print 'line_new shape = ', line_new.shape, 'listpt_new shape ', listpt_new.shape
-    line_new[:,7] = [index for index, item in enumerate(line_new)]
+    line_new[:, 7] = [index for index, item in enumerate(line_new)]
+
     return line_new, listpt_new, line_merged_n

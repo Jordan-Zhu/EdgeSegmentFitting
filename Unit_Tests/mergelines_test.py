@@ -11,4 +11,6 @@ if __name__ == '__main__':
     print 'Line feature shape', line_in.shape, 'list point shape ', listpt.shape
     # print 'List point: ', listpt
 
+    # Possible fix for out of bounds error: instead of deleting lines, fill them with an
+    # empty array as a placeholder.
     merge_lines(line_in, listpt, thresh=10, imgsize=[640, 480])

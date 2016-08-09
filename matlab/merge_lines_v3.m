@@ -41,6 +41,7 @@ for ii=1:length(Lpt)
         ar = sort(ar) ;
         cnt30 = 1 ;
         % cnt10 is incrementer
+        % get all combinations of the two lines
         for cnt10=1:length(ar)-1
             p1 = ar(cnt10);
             for cnt20 = cnt10+1:length(ar)

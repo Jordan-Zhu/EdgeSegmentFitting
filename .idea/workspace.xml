@@ -17,10 +17,10 @@
     <SUITE FILE_PATH="coverage/EdgeSegmentFitting$new_main.coverage" NAME="new_main Coverage Results" MODIFIED="1468970670749" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EdgeSegmentFitting$depth_img_test.coverage" NAME="depth_img_test Coverage Results" MODIFIED="1469146786209" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Unit Tests" />
     <SUITE FILE_PATH="coverage/EdgeSegmentFitting$lineseg_unit_test.coverage" NAME="lineseg_unit_test Coverage Results" MODIFIED="1470093053153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Unit_Tests" />
-    <SUITE FILE_PATH="coverage/EdgeSegmentFitting$mergelines_test.coverage" NAME="mergelines_test Coverage Results" MODIFIED="1470697568299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Unit_Tests" />
+    <SUITE FILE_PATH="coverage/EdgeSegmentFitting$mergelines_test.coverage" NAME="mergelines_test Coverage Results" MODIFIED="1470761781866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Unit_Tests" />
     <SUITE FILE_PATH="coverage/EdgeSegmentFitting$sioloadmat__1_.coverage" NAME="sioloadmat (1) Coverage Results" MODIFIED="1470693462877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EdgeSegmentFitting$depthdis.coverage" NAME="depthdis Coverage Results" MODIFIED="1470092530882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/EdgeSegmentFitting$merge_lines.coverage" NAME="merge_lines Coverage Results" MODIFIED="1470409990401" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EdgeSegmentFitting$merge_lines.coverage" NAME="merge_lines Coverage Results" MODIFIED="1470759120869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EdgeSegmentFitting$sioloadmat.coverage" NAME="sioloadmat Coverage Results" MODIFIED="1469750782549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Unit_Tests" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -35,10 +35,10 @@
       <file leaf-file-name="merge_lines.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/merge_lines.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="81" column="43" selection-start-line="81" selection-start-column="43" selection-end-line="81" selection-end-column="43" />
+            <state relative-caret-position="289">
+              <caret line="165" column="84" selection-start-line="165" selection-start-column="84" selection-end-line="165" selection-end-column="84" />
               <folding>
-                <element signature="e#688#699#0" expanded="true" />
+                <element signature="e#1261#1272#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -47,8 +47,8 @@
       <file leaf-file-name="mergelines_test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Unit_Tests/mergelines_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+            <state relative-caret-position="153">
+              <caret line="9" column="38" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
               <folding>
                 <element signature="e#1#19#0" expanded="true" />
               </folding>
@@ -59,8 +59,8 @@
       <file leaf-file-name="sioloadmat.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sioloadmat.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+            <state relative-caret-position="187">
+              <caret line="12" column="59" selection-start-line="12" selection-start-column="59" selection-end-line="12" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -91,8 +91,8 @@
         <option value="$PROJECT_DIR$/Unit_Tests/maxlinedev_unit_test.py" />
         <option value="$PROJECT_DIR$/Unit_Tests/sioloadmat.py" />
         <option value="$PROJECT_DIR$/drawedgelist.py" />
-        <option value="$PROJECT_DIR$/Unit_Tests/mergelines_test.py" />
         <option value="$PROJECT_DIR$/sioloadmat.py" />
+        <option value="$PROJECT_DIR$/Unit_Tests/mergelines_test.py" />
         <option value="$PROJECT_DIR$/merge_lines.py" />
       </list>
     </option>
@@ -134,7 +134,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -169,6 +168,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -492,8 +492,8 @@
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.mergelines_test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.sioloadmat (1)" />
-        <item index="2" class="java.lang.String" itemvalue="Python.merge_lines" />
+        <item index="1" class="java.lang.String" itemvalue="Python.merge_lines" />
+        <item index="2" class="java.lang.String" itemvalue="Python.sioloadmat (1)" />
         <item index="3" class="java.lang.String" itemvalue="Python.lineseg_unit_test" />
         <item index="4" class="java.lang.String" itemvalue="Python.depthdis" />
       </list>
@@ -525,7 +525,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31023622" sideWeight="0.49609375" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31023622" sideWeight="0.49609375" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -590,7 +590,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#688#699#0" expanded="true" />
+            <element signature="e#1261#1272#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -628,7 +628,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#688#699#0" expanded="true" />
+            <element signature="e#1261#1272#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -659,7 +659,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#688#699#0" expanded="true" />
+            <element signature="e#1261#1272#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -821,16 +821,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sioloadmat.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+        <state relative-caret-position="187">
+          <caret line="12" column="59" selection-start-line="12" selection-start-column="59" selection-end-line="12" selection-end-column="59" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Unit_Tests/mergelines_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        <state relative-caret-position="153">
+          <caret line="9" column="38" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
           <folding>
             <element signature="e#1#19#0" expanded="true" />
           </folding>
@@ -839,10 +839,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/merge_lines.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="81" column="43" selection-start-line="81" selection-start-column="43" selection-end-line="81" selection-end-column="43" />
+        <state relative-caret-position="289">
+          <caret line="165" column="84" selection-start-line="165" selection-start-column="84" selection-end-line="165" selection-end-column="84" />
           <folding>
-            <element signature="e#688#699#0" expanded="true" />
+            <element signature="e#1261#1272#0" expanded="true" />
           </folding>
         </state>
       </provider>
