@@ -34,14 +34,15 @@ import numpy as np
 
 def merge_lines(inputline, listpt, thresh, imgsize):
     # Merge lines.
-    listpt_new = listpt
-    line_new = inputline
+    listpt_new = listpt.tolist()
+    line_new = inputline.tolist()
     line_merged_n = []
+    # Number the merged lines
     for i in xrange(0, inputline.shape[0]):
         line_merged_n.append([i])
 
 
-    print 'line new ', line_new.dtype
+    # print 'line new ', line_new.dtype
     print 'line merged n ', line_merged_n[307], 'line merged shape ', len(line_merged_n)
     # temp = inputline[:, 9:10]
     # Index 9 and 10 are the start and end points of a line in this array.
@@ -67,7 +68,7 @@ def merge_lines(inputline, listpt, thresh, imgsize):
         print 'coincident points = ', coincident_pts
 
         # If there is more than one such line segment,
-        # then we can determine which lines are able to be merged.
+        # then we can determine which combination of lines are able to be merged.
         if coincident_pts > 1:
             line_indices.sort()
             print 'line indices ', line_indices
@@ -93,8 +94,16 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                 print 'combo ', combo1, ' combo 2 ', combo2
                 print 'line new size ', len(line_new)
                 print 'angles1 ',  len(line_new[combo1]), ' angle2 ', len(line_new[combo2])
-                angle1 = line_new[combo1][6]
-                angle2 = line_new[combo2][6]
+
+                try:
+                    angle1 = line_new[combo1][6]
+                except IndexError:
+                    angle1 = 0
+                try:
+                    angle2 = line_new[combo2][6]
+                except IndexError:
+                    angle2 = 0
+
                 print 'angles ', angle1, ' ', angle2
                 delta_slope = abs(angle1 - angle2)
 
@@ -142,8 +151,9 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             print 'max ', max(combo1, combo2), ' min ', min(combo1, combo2)
                             # line_new[max(combo1, combo2)][:] = 0
                             # line_new[min(combo1, combo2)][:] = 0
-                            line_new = np.delete(line_new, line_new[startpt], 0)
-                            line_new = np.delete(line_new, line_new[endpt], 0)
+                            # line_new = np.delete(line_new, line_new[startpt], 0)
+                            del line_new[startpt][:]
+                            del line_new[endpt][:]
 
 
                             idx1 = line_merged_n[combo1]
@@ -156,13 +166,21 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                             line_merged_n.pop(endpt)
 
                             # line_new = np.append(line_new, [x1, y1, x2, y2, newlen, slope, newang, 0, ind1, ind2])
-                            count = line_new.shape[0]
+                            # count = len(line_new)
+                            count = -1
+                            for i, item in enumerate(line_new):
+                                # Line here
+                                if line_new[i][:]:
+                                    count += 1
+                                # Empty list.
+                                else:
+                                    continue
                             print 'count ', count
-                            line_new = line_new.tolist()
+                            # line_new = line_new.tolist()
                             line_new.append([x1[0], y1[0], x2[0], y2[0], newlen[0], slope[0], newang, 0, ind1, ind2])
                             print 'line new append ', line_new[count]
                             # Extend to include which lines were merged.
-                            print 'line_merged_n ', count, ' ', line_merged_n[count]
+                            print 'line_merged_n ', len(line_merged_n)
                             line_merged_n[count].extend([combo1, combo2])
                             # count += 1
 
@@ -201,14 +219,14 @@ def merge_lines(inputline, listpt, thresh, imgsize):
 
                             # del listpt_new[max(combo1, combo2)]
                             # del listpt_new[min(combo1, combo2)]
-                            print 'listpt new shape ', listpt_new.dtype
+                            print 'listpt new shape ', len(listpt_new)
                             print 'start pt ', startpt, ' end pt ', endpt
-                            listpt_new = listpt_new.tolist()
+                            # listpt_new = listpt_new.tolist()
                             listpt_new.pop(startpt)
                             listpt_new.pop(endpt)
 
                             listpt_new[count] = [line_start[0: len(line_start) - 1], line_end]
-                            listpt_new = np.asarray(listpt_new)
+                            # listpt_new = np.asarray(listpt_new)
                             # print 'listpt_new ', listpt_new
 
                             # In case the condition is true,
@@ -228,14 +246,21 @@ def merge_lines(inputline, listpt, thresh, imgsize):
                     k += 1
                     continue
 
-    # Have not reached here yet
-
     # m = len(line_new)
     # Find how to get specific column in sublists.
-    line_new = np.asarray(line_new)
+    # line_new = np.asarray(line_new)
 
     # Labels the line with an index number so we can refer back to it later.
-    print 'line_new shape = ', line_new.shape, 'listpt_new shape ', listpt_new.shape
-    line_new[:, 7] = [index for index, item in enumerate(line_new)]
+    print 'line_new shape = ', len(line_new), 'listpt_new shape ', len(listpt_new)
+    print 'line new 0 = ', line_new[0]
+    # line_new[:, 7] = [index for index, item in enumerate(line_new)]
+    for index, item in enumerate(line_new):
+        # Remove the empty lists
+        if not line_new[index][:]:
+            line_new.pop(index)
+    print 'line_new after pop ', len(line_new)
+    for index, item in enumerate(line_new):
+        print 'index ', index
+        line_new[index][7] = index
 
     return line_new, listpt_new, line_merged_n

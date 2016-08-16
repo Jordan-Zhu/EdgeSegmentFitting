@@ -32,7 +32,7 @@ for ii=1:length(Lpt)
     ptx = Lpt(ii) ;
     % Find index of value ptx in Line_new
     [ar , ~] = find(Line_new == ptx) ;
-    i1 = length(ar) ;
+    i1 = length(ar) ; 
     
     % Do this if there are more than one ptx
     if (i1>1)
@@ -54,34 +54,36 @@ for ii=1:length(Lpt)
         [sm,~] = size(M) ;
         cnt3=1 ;
         while (cnt3<sm+1)
-            dm = abs(Line_new(M(cnt3,1),7)-Line_new(M(cnt3,2),7)) ; % angles different
+            startpt = M(cnt3,1);
+            endpt = M(cnt3,2);
+            dm = abs(Line_new(startpt,7)-Line_new(endpt,7)) ; % angles different
             if dm<thresh_m % less than threshold
-                B1 = [(Line_new(M(cnt3,1),9))  (Line_new(M(cnt3,1),10))] ;
-                B2 = [(Line_new(M(cnt3,2),9))  (Line_new(M(cnt3,2),10))] ;
+                B1 = [(Line_new(startpt,9))  (Line_new(startpt,10))] ;
+                B2 = [(Line_new(endpt,9))  (Line_new(endpt,10))] ;
                 if (length(intersect(B1,B2))<2) % two lines are not exactly same
                     poo = setdiff([B1 B2],ptx) ; % start and end point of the new line
-                    alph1 = Line_new(M(cnt3,1),7) ;
-                    alph2 = Line_new(M(cnt3,2),7) ;
-                    L1 = Line_new(M(cnt3,1),:) ; L2 = Line_new(M(cnt3,2),:) ;
+                    alph1 = Line_new(startpt,7) ;
+                    alph2 = Line_new(endpt,7) ;
+                    L1 = Line_new(startpt,:) ; L2 = Line_new(endpt,:) ;
                     ind1  = poo(1) ; ind2 = poo(2) ;
                     [y1,x1] = ind2sub(imgsize,ind1) ; [y2,x2] = ind2sub(imgsize,ind2) ;
                     m = (y2-y1)/(x2-x1)  ;
                     L = sqrt((x2-x1)^2+(y2-y1)^2);
                     alpha = atand(-m) ;
                     if (alpha >= min(alph1,alph2))&&(max(alph1,alph2) >= alpha) % intesection point is in the middle of the new line
-                        Line_new(max(M(cnt3,1),M(cnt3,2)),:)=[] ;
-                        Line_new(min(M(cnt3,1),M(cnt3,2)),:)=[] ;
-                        jj1 = Line_merged_n{M(cnt3,1)};
-                        jj2 = Line_merged_n{M(cnt3,2)};
-                        Line_merged_n(max(M(cnt3,1),M(cnt3,2))) = [] ; 
-                        Line_merged_n(min(M(cnt3,1),M(cnt3,2))) = [] ; 
+                        Line_new(max(startpt,endpt),:)=[] ;
+                        Line_new(min(startpt,endpt),:)=[] ;
+                        jj1 = Line_merged_n{startpt};
+                        jj2 = Line_merged_n{endpt};
+                        Line_merged_n(max(startpt,endpt)) = [] ; 
+                        Line_merged_n(min(startpt,endpt)) = [] ; 
                         [c0,~] = size(Line_new) ;
                         Line_new(c0+1,:) = [y1 x1 y2 x2 L m alpha 0 ind1 ind2] ; % start point/end point/length/slope/angle/number/label
                         Line_merged_n{c0+1} = [jj1 jj2] ; % append index positions to end of line merged
                         
                         % merge the ListPoints
-                        Lpp1 = ListPoint_new{M(cnt3,1)} ;
-                        Lpp2 = ListPoint_new{M(cnt3,2)} ;
+                        Lpp1 = ListPoint_new{startpt} ;
+                        Lpp2 = ListPoint_new{endpt} ;
                         f1 = find(Lpp1==ind1); f2 = find(Lpp1==ind2);
                         f3 = find(Lpp2==ind1); f4 = find(Lpp2==ind2);
                                               
@@ -107,8 +109,8 @@ for ii=1:length(Lpt)
                                                     
                                 
                         end
-                        ListPoint_new(max(M(cnt3,1),M(cnt3,2))) = [] ; 
-                        ListPoint_new(min(M(cnt3,1),M(cnt3,2))) = [] ;
+                        ListPoint_new(max(startpt,endpt)) = [] ; 
+                        ListPoint_new(min(startpt,endpt)) = [] ;
                         ListPoint_new{c0+1} = [L_start(1:end-1) ; L_end] ; 
                         
                         
